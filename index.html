@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" type="text/css" href="resource/layui/css/layui.css"/>
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<link rel="stylesheet" type="text/css" href="css/index.css"/>
+<script src="resource/jquery/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="resource/layui/layui.js" type="text/javascript"></script>
+<script src="resource/threejs/three.min.js"></script>
+<script src="js/index.js" type="text/javascript"></script>
+<title></title>
+</head>
+<body>
+<div class="g-main">
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">时间显示<strong>time_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-time-a" id="time1">
+                <span class="date"></span>
+                <span class="week"></span>
+                <span class="time"></span>
+            </div>
+        </div>
+        <style>
+            @font-face {
+                font-family: "DS-DIGIB";
+                src: url('./resource/font/DS-DIGIB.TTF') format('truetype');
+            }
+            .e-time-a{
+                white-space: nowrap;
+            }
+            .e-time-a span{
+                display: inline-block;
+                height: 1.5vh;
+                line-height: 1.5vh;
+                margin-right: 0.5vw;
+                font-size: 1vw;
+            }
+            .e-time-a .time{
+                color:yellow;
+                font-family: "DS-DIGIB";
+                font-size: 1.3vw;
+            }
+        </style>
+        <script>
+            saveHtml('time1');//这个用法用于保存html结构,使用时删掉
+            time_a($("#time1"));
+            function time_a(ele){
+                var timeGo=function(){
+                    var nowTime = new Date();
+                    var years = nowTime.getFullYear();
+                    var months = nowTime.getMonth() + 1;
+                    var datas = nowTime.getDate();
+                    var days = nowTime.getDay();
+                    var hours = nowTime.getHours();
+                    var minutes = nowTime.getMinutes();
+                    var seconds = nowTime.getSeconds();
+                    if(months < 10) {
+                        months = '0' + months;
+                    }
+                    if(datas < 10) {
+                        datas = '0' + datas;
+                    }
+                    if(hours < 10) {
+                        hours = '0' + hours;
+                    }
+                    if(minutes < 10) {
+                        minutes = '0' + minutes;
+                    }
+                    if(seconds < 10) {
+                        seconds = '0' + seconds;
+                    }
+                    var arr = ['一', '二', '三', '四', '五', '六', '日'];
+                    days = arr[days - 1];
+                    ele.find('.date').html(years + '/' + months + '/' + datas );
+                    ele.find('.week').html('星期' + days);
+                    ele.find('.time').html(hours + ':' + minutes + ':' + seconds);
+                }
+                timeGo();
+                setInterval(function(){
+                    timeGo();
+                },1000);
+            }
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">数字翻滚<strong>flip_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-flip-a" id="flip1"></div>
+        </div>
+        <style>
+            .e-flip-a {
+                position: relative;
+                display: inline-block;
+                vertical-align: middle;
+                overflow: hidden;
+                height: 8vh;
+            }
+            .e-flip-a .nums {
+                position: relative;
+                display: inline-block;
+                width: 2.65625vw;
+                margin: 0 1px;
+            }
+            .e-flip-a .nums li {
+                position: relative;
+                font-size: 3.125vw;
+                text-align: center;
+                font-weight: bold;
+                border: 1px solid #3c5fc7;
+                box-shadow: 0 0 1.04166667vw #3c74c7 inset;
+                background-color: rgba(60, 95, 199, 0.1);
+                box-sizing: border-box;
+                height: 8vh;
+                line-height: 8vh;
+            }
+            .e-flip-a .nums:nth-last-child(3n) {
+                margin-left: 1.35416667vw;
+            }
+            .e-flip-a .nums:first-child {
+                margin-left: 0;
+            }
+            .e-flip-a .nums:nth-last-child(3n) li:before {
+                content: ',';
+                position: absolute;
+                bottom: 0;
+                left: -1.25vw;
+                font-size: 2.60416667vw;
+                width: 1.35416667vw;
+                font-family: "FZZYJW", "微软雅黑";
+            }
+            .e-flip-a .nums:nth-child(1) li:before {
+                content: '';
+            }
+        </style>
+        <script>
+            saveHtml('flip1');//这个用法用于保存html结构,因为调用js方法后，里面html结构就变调了
+            flip_a('flip1',9999999,8);
+            function flip_a(id,num,height){
+                //id:绑定该效果的元素id 	num:第一次展示的数值	height:数字框高度
+                _this=this;
+                this.flipNum=function(id,num,height){
+                    var str=num+'';
+                    var len=str.length;
+                    var arr1=[];
+                    var arr2=[];
+                    if($("#"+id).attr("num")){
+                        var oldNum=$("#"+id).attr("num")+'';
+                    }else{
+                        var oldNum=0+'';
+                    }
+                    $("#"+id).attr("num",num);
+                    $("#"+id).html('');
+                    for(var i=0;i<len;i++){
+                        arr1.push(str[i])
+                        arr2.push(oldNum[i]);
+                        $("#"+id).append(
+                            '<ul class="nums" style="">'
+                                +'<li>0</li> <li>1</li> <li>2</li> <li>3</li> <li>4</li> <li>5</li> <li>6</li> <li>7</li> <li>8</li> <li>9</li>'
+                            +'</ul>'
+                        )
+                    }
+                    for(var i=0;i<len;i++){
+                        if(arr1[i]==arr2[i]){
+                            $("#"+id).find('.nums').eq(i).css({
+                                'top':-arr1[i]*height+'vh' 
+                            })
+                        }else{
+                            $("#"+id).find('.nums').eq(i).animate({
+                                'top':-arr1[i]*height+'vh'
+                            },650)
+                        }
+                    }
+                }
+                this.flipNum(id,num,height);
+                setInterval(function(){
+                    _this.flipNum(id,parseInt(Math.random()*num),height);
+                },3000);
+            }
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">tab切换<strong>tab_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-tab-a" id="tab1">
+                <ul class="tab-title">
+                    <li class="active">tab1</li>
+                    <li>tab2</li>
+                    <li>tab3</li>
+                    <li>tab4</li>
+                </ul>
+                <ul class="tab-content">
+                    <li>tab1</li>
+                    <li>tab2</li>
+                    <li>tab3</li>
+                    <li>tab4</li>
+                </ul>
+            </div>
+        </div>
+        <style>
+            .e-tab-a{
+                width:24vw;
+            }
+            .e-tab-a .tab-title{
+                white-space: nowrap;
+            }
+            .e-tab-a .tab-title li{
+                display: inline-block;
+                width:2.4vw;
+                height: 2.4vh;
+                line-height: 2.4vh;
+                background-color: rgb(24, 80, 185);
+                text-align: center;
+                cursor: pointer;
+            }
+            .e-tab-a .tab-title li:hover{
+                background-color: rgb(18, 100, 252);
+            }
+            .e-tab-a .tab-title li.active{
+                background-color: red;
+            }
+            .e-tab-a .tab-content{
+                overflow: hidden;
+                white-space: nowrap;
+                font-size: 0;
+            }
+            .e-tab-a .tab-content li{
+                display: inline-block;
+                width:100%;
+                box-sizing: border-box;
+                border:1px solid red;
+                height: 15vh;
+                font-size: 0.8vw;
+                transition: margin-left 0.3s;
+            }
+        </style>
+        <script>
+            saveHtml('tab1');//这个用法用于保存html结构,使用时删掉
+            tab_a($("#tab1"));
+            function tab_a(ele){
+                var tabNumber=ele.children(".tab-title").children("li").length;
+                var scollW=parseInt(ele.children(".tab-content").width());
+                ele.children(".tab-title").children("li").click(function(){
+                    $(this).addClass("active").siblings().removeClass("active");
+                    var index=$(this).index();
+                    ele.children(".tab-content").children("li").eq(0).css({"margin-left":"-"+scollW*index+"px"});
+                })
+
+                var tabGo=function(){
+                    var index=ele.children(".tab-title").children("li.active").index();
+                    if(index<tabNumber-1){
+                        ele.children(".tab-title").children("li").eq(index+1).addClass("active").siblings().removeClass("active");
+                        ele.children(".tab-content").children("li").eq(0).css({"margin-left":"-"+scollW*(index+1)+"px"});
+                    }else{
+                        ele.children(".tab-title").children("li").eq(0).addClass("active").siblings().removeClass("active");
+                        ele.children(".tab-content").children("li").eq(0).css({"margin-left":"0"});
+                    }
+                }
+                var myVar=setInterval(function(){
+                    tabGo();
+                },2000);
+                ele.mouseover(function(){
+                    clearInterval(myVar);
+                })
+                ele.mouseout(function(){
+                    myVar=setInterval(function(){ tabGo()},2000);
+                })
+
+            }
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">新闻列表滚动1<strong>scoll_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-scoll-a" id="scoll1">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+        <style>
+            .e-scoll-a{
+                overflow: hidden;
+                height: 20vh;
+                width:30vw;
+            }
+            .e-scoll-a li{
+                height: 3vh;
+                background-color: rgb(5, 50, 109);
+                margin-bottom: 1vh;
+            }
+            .e-scoll-a li:hover{
+                background-color: rgb(8, 71, 153);
+            }
+        </style>
+        <script>
+            saveHtml('scoll1');//这个用法用于保存html结构,使用时删掉
+            scoll_a($("#scoll1"));
+            function scoll_a(ele){
+                var self=this;
+                var ele=ele;
+                var scollTop=0;
+                var h1=parseInt(ele.children("ul").height());
+                var h2=parseInt(ele.height());
+                var listGo=function(){
+                    // console.log(self.scollTop);
+                    if(h2-scollTop<h1+h2/2){
+                        scollTop=scollTop-1;
+                        ele.children("ul").css({"margin-top":scollTop});
+                    }else{
+                        scollTop=0;
+                        ele.children("ul").css({"margin-top":"0"});
+                    }
+                }
+                var myVar=setInterval(function(){
+                    listGo();
+                },40);
+                ele.mouseover(function(){
+                    clearInterval(myVar);
+                })
+                ele.mouseout(function(){
+                    myVar=setInterval(function(){ listGo()},40);
+                })
+            }
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">新闻列表滚动2<strong>scoll_b</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-scoll-b" id="scoll2">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+        <style>
+            .e-scoll-b{
+                overflow: hidden;
+                height: 20vh;
+                width:30vw;
+            }
+            .e-scoll-b li{
+                height: 3vh;
+                background-color: rgb(5, 50, 109);
+                margin-bottom: 1vh;
+            }
+            .e-scoll-b li:hover{
+                background-color: rgb(8, 71, 153);
+            }
+        </style>
+        <script>
+            saveHtml('scoll2');//这个用法用于保存html结构,使用时删掉
+            scoll_b($("#scoll2"));
+            function scoll_b(ele){
+                var h1=parseInt(ele.find("li:first-child").height())+parseInt(ele.find("li:first-child").css("margin-bottom"));
+                var listGo=function(){
+                    ele.find("li:first-child").animate({"margin-top":"-"+h1+"px"},function(){
+                        ele.find("li:first-child").css({"margin-top":"0"});
+                        ele.find("li:first-child").insertAfter(ele.find("li:last-child"));
+                    })
+                }
+                var myVar=setInterval(function(){
+                    listGo();
+                },2000);
+                ele.mouseover(function(){
+                    clearInterval(myVar);
+                })
+                ele.mouseout(function(){
+                    myVar=setInterval(function(){ listGo()},2000);
+                })
+            }
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">消息滚动<strong>scoll_c</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <marquee class="e-scoll-c" id="scoll3" direction="left" align="bottom" onmouseout="this.start()" onmouseover="this.stop()" scrollamount="2" scrolldelay="1">
+                <span>滚动消息内容1</span>
+                <span>滚动消息内容2</span>
+                <span>滚动消息内容3</span>
+                <span>滚动消息内容4</span>
+                <span>滚动消息内容5</span>
+                <span>滚动消息内容6</span>
+                <span>滚动消息内容7</span>
+                <span>滚动消息内容8</span>
+                <span>滚动消息内容9</span>
+            </marquee>
+        </div>
+        <style>
+            .e-scoll-c{
+                width: 30vw;
+                border:1px solid red;
+            }
+            .e-scoll-c span{
+                display: inline-block;
+                margin-right: 1vw;
+                height: 3vh;
+                line-height: 3vh;
+                cursor: pointer;
+            }
+            .e-scoll-c span:hover{
+                color:yellow;
+            }
+        </style>
+        <script>
+            saveHtml('scoll3');//这个用法用于保存html结构,使用时删掉
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">消息滚动<strong>scoll_d</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <marquee class="e-scoll-d" id="scoll4" direction="up" align="bottom" onmouseout="this.start()" onmouseover="this.stop()" scrollamount="1" scrolldelay="1">
+                <span>滚动消息内容滚动消息内容1</span>
+                <span>滚动消息内容滚动消息内容2</span>
+                <span>滚动消息内容滚动消息内容3</span>
+                <span>滚动消息内容滚动消息内容4</span>
+                <span>滚动消息内容滚动消息内容5</span>
+                <span>滚动消息内容滚动消息内容6</span>
+                <span>滚动消息内容滚动消息内容7</span>
+                <span>滚动消息内容滚动消息内容8</span>
+                <span>滚动消息内容滚动消息内容9</span>
+            </marquee>
+        </div>
+        <style>
+            .e-scoll-d{
+                width: 10vw;
+                border:1px solid red;
+                height: 3vh;
+            }
+            .e-scoll-d span{
+                display: block;
+                margin-right: 1vw;
+                height: 3vh;
+                line-height: 3vh;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                cursor: pointer;
+            }
+            .e-scoll-d span:hover{
+                color:yellow;
+            }
+        </style>
+        <script>
+            saveHtml('scoll4');//这个用法用于保存html结构,使用时删掉
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">滚动切换<strong>switch_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-switch-a" id="switch1" flag=0>
+                <span class="prev-btn"></span>
+                <ul class="switch-in">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <span class="next-btn"></span>
+            </div>
+        </div>
+        <style>
+            .e-switch-a {
+                position: relative;
+                padding: 0 2.5vw;
+                box-sizing: border-box;
+                width: 40vw;
+            }
+            .e-switch-a .prev-btn {
+                position: absolute;
+                width: 1.8vw;
+                height: 4.4vh;
+                left: 0;
+                top: 50%;
+                margin-top: -2.2vh;
+                cursor: pointer;
+                background-color: red;
+            }
+            .e-switch-a .prev-btn:hover {
+                opacity: 0.7;
+            }
+            .e-switch-a .next-btn {
+                position: absolute;
+                width: 1.8vw;
+                height: 4.4vh;
+                right: 0;
+                top: 50%;
+                margin-top: -2.2vh;
+                cursor: pointer;
+                background-color: red;
+            }
+            .e-switch-a .next-btn:hover {
+                opacity: 0.7;
+            }
+            .e-switch-a .switch-in {
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 0;
+            }
+            .e-switch-a .switch-in > li {
+                width: 19%;
+                margin: 0 0.5%;
+                display: inline-block;
+                background-color: rgba(73, 163, 255, 0.12);
+                box-sizing: border-box;
+                font-size: 0.7vw;
+                cursor: pointer;
+                height: 15vh;
+            }
+            .e-switch-a .switch-in > li:hover {
+                opacity: 0.7;
+            }
+        </style>
+        <script>
+            saveHtml('switch1');//这个用法用于保存html结构,使用时删掉
+            switch_a($("#switch1"));
+            function switch_a(ele){
+                var liMarginLeft=parseInt(ele.find(".switch-in>li").css("margin-left"));
+                var liWidth=parseInt(ele.find(".switch-in>li").css("width"));
+                var switchInWidth=parseInt(ele.find(".switch-in").css("width"));
+                var switchInLiNumber=parseInt(switchInWidth/liWidth);
+                var liNumber=ele.find(".switch-in>li").length;
+                var timesAdd=liNumber%switchInLiNumber==0?0:1;
+                var switchTimes=parseInt(liNumber/switchInLiNumber)+timesAdd;
+                // console.log(switchTimes);
+                ele.find(".next-btn").click(function(){
+                    var flag=ele.attr("flag");
+                    if(flag<switchTimes-1){
+                        flag++;
+                        ele.attr("flag",flag);
+                        ele.find(".switch-in>li:first-child").animate({"margin-left":(liMarginLeft-switchInWidth*flag)+"px"});
+                    }
+                })
+                ele.find(".prev-btn").click(function(){
+                    var flag=ele.attr("flag");
+                    if(flag>0){
+                        flag--;
+                        ele.attr("flag",flag);
+                        ele.find(".switch-in>li:first-child").animate({"margin-left":(liMarginLeft-switchInWidth*flag)+"px"});
+                    }
+                })
+            }
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">滚动切换<strong>switch_b</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-switch-b" id="switch2">
+                <span class="prev-btn"></span>
+                <ul class="switch-in">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <span class="next-btn"></span>
+            </div>
+        </div>
+        <style>
+            .e-switch-b {
+                position: relative;
+                padding: 0 2.5vw;
+                box-sizing: border-box;
+                width: 40vw;
+            }
+            .e-switch-b .prev-btn {
+                position: absolute;
+                width: 1.8vw;
+                height: 4.4vh;
+                left: 0;
+                top: 50%;
+                margin-top: -2.2vh;
+                cursor: pointer;
+                background-color: red;
+            }
+            .e-switch-b .prev-btn:hover {
+                opacity: 0.7;
+            }
+            .e-switch-b .next-btn {
+                position: absolute;
+                width: 1.8vw;
+                height: 4.4vh;
+                right: 0;
+                top: 50%;
+                margin-top: -2.2vh;
+                cursor: pointer;
+                background-color: red;
+            }
+            .e-switch-b .next-btn:hover {
+                opacity: 0.7;
+            }
+            .e-switch-b .switch-in {
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 0;
+            }
+            .e-switch-b .switch-in > li {
+                width: 31.3%;
+                margin: 0 1%;
+                display: inline-block;
+                background-color: rgba(73, 163, 255, 0.12);
+                box-sizing: border-box;
+                font-size: 0.7vw;
+                cursor: pointer;
+                height: 15vh;
+            }
+            .e-switch-b .switch-in > li:hover {
+                opacity: 0.7;
+            }
+        </style>
+        <script>
+            saveHtml('switch2');//这个用法用于保存html结构,使用时删掉
+            switch_b($("#switch2"));
+            function switch_b(ele){
+                var scoll;
+
+                ele.find(".next-btn").mousedown(function(){
+                    var marginLeft=parseInt(ele.find(".switch-in li:last-child").css("margin-left"));
+                    var switchLeft=parseInt(ele.find(".switch-in li:first-child").css("margin-left"));
+                    scoll = setInterval(function(){
+                        switchLeft=switchLeft-2;
+                        ele.find(".switch-in li:first-child").css({"margin-left":switchLeft+"px"});
+                    }, 10);
+                });
+                ele.find(".next-btn").mouseup(function(){
+                    clearInterval(scoll);
+                });
+                
+                ele.find(".prev-btn").mousedown(function(){
+                    var marginLeft=parseInt(ele.find(".switch-in li:last-child").css("margin-left"));
+                    var switchLeft=parseInt(ele.find(".switch-in li:first-child").css("margin-left"));
+                    scoll = setInterval(function(){
+                        switchLeft=switchLeft+2;
+                        if(switchLeft<marginLeft){
+                            ele.find(".switch-in li:first-child").css({"margin-left":switchLeft+"px"});
+                        }else{
+                            ele.find(".switch-in li:first-child").css({"margin-left":marginLeft+"px"});
+                        }
+                    }, 10);
+                });
+                ele.find(".prev-btn").mouseup(function(){
+                    clearInterval(scoll);
+                });
+            }
+
+
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">滚动切换<strong>switch_c</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-switch-c" id="switch3">
+                <span class="prev-btn"></span>
+                <ul class="switch-in">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <ul class="switch-btn">
+                    <li class="active"></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <span class="next-btn"></span>
+            </div>
+        </div>
+        <style>
+            .e-switch-c {
+                position: relative;
+                padding: 0 2.5vw 2vh;
+                box-sizing: border-box;
+                width: 20vw;
+            }
+            .e-switch-c .prev-btn {
+                position: absolute;
+                width: 1.8vw;
+                height: 4.4vh;
+                left: 0;
+                top: 50%;
+                margin-top: -2.2vh;
+                cursor: pointer;
+                background-color: red;
+            }
+            .e-switch-c .prev-btn:hover {
+                opacity: 0.7;
+            }
+            .e-switch-c .next-btn {
+                position: absolute;
+                width: 1.8vw;
+                height: 4.4vh;
+                right: 0;
+                top: 50%;
+                margin-top: -2.2vh;
+                cursor: pointer;
+                background-color: red;
+            }
+            .e-switch-c .next-btn:hover {
+                opacity: 0.7;
+            }
+            .e-switch-c .switch-btn{
+                position: absolute;
+                left: 0;
+                bottom: 0vh;
+                width:100%;
+                text-align: center;
+                font-size: 0;
+            }
+            .e-switch-c .switch-btn li{
+                width:0.6vw;
+                height: 0.6vw;
+                display: inline-block;
+                border-radius: 50%;
+                margin:0 0.2vw;
+                background-color: rgba(73, 163, 255, 0.3);
+                cursor: pointer;
+            }
+            .e-switch-c .switch-btn li:hover{
+                background-color: rgba(73, 163, 255, 0.2);
+            }
+            .e-switch-c .switch-btn li.active{
+                background-color: red;
+            }
+            .e-switch-c .switch-in {
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 0;
+            }
+            .e-switch-c .switch-in > li {
+                width: 100%;
+                display: inline-block;
+                background-color: rgba(73, 163, 255, 0.12);
+                box-sizing: border-box;
+                font-size: 0.7vw;
+                cursor: pointer;
+                height: 15vh;
+                box-sizing: border-box;
+                border:1px solid green;
+            }
+            .e-switch-c .switch-in > li:hover {
+                opacity: 0.7;
+            }
+        </style>
+        <script>
+            saveHtml('switch3');//这个用法用于保存html结构,使用时删掉
+            switch_c($("#switch3"));
+            function switch_c(ele){
+                var switchWidth=parseInt(ele.find(".switch-in").css("width"));
+                var liNumber=ele.find(".switch-in li").length;
+                ele.find(".next-btn").click(function(){
+                    var flag=ele.find(".switch-btn li.active").index();
+                    if(flag<liNumber-1){
+                        flag++;
+                        ele.find(".switch-in>li:first-child").animate({"margin-left":-(switchWidth*flag)+"px"});
+                        ele.find(".switch-btn li").removeClass("active");
+                        ele.find(".switch-btn li").eq(flag).addClass("active");
+                    }else{
+                        ele.find(".switch-in>li:first-child").animate({"margin-left":"0px"});
+                        ele.find(".switch-btn li").removeClass("active");
+                        ele.find(".switch-btn li").eq(0).addClass("active");
+                    }
+                })
+                ele.find(".prev-btn").click(function(){
+                    var flag=ele.find(".switch-btn li.active").index();
+                    if(flag>0){
+                        flag--;
+                        ele.find(".switch-in>li:first-child").animate({"margin-left":-(switchWidth*flag)+"px"});
+                        ele.find(".switch-btn li").removeClass("active");
+                        ele.find(".switch-btn li").eq(flag).addClass("active");
+                    }else{
+                        ele.find(".switch-in>li:first-child").animate({"margin-left":-(switchWidth*(liNumber-1))+"px"});
+                        ele.find(".switch-btn li").removeClass("active");
+                        ele.find(".switch-btn li").eq(liNumber-1).addClass("active");
+                    }
+                })
+                ele.find(".switch-btn li").click(function(){
+                    var current=$(this).index();
+                    ele.find(".switch-in>li:first-child").animate({"margin-left":-(switchWidth*current)+"px"});
+                    ele.find(".switch-btn li").removeClass("active");
+                    ele.find(".switch-btn li").eq(current).addClass("active");
+                })
+
+
+                var switchGo=function(){
+                    var flag=ele.find(".switch-btn li.active").index();
+                    if(flag<liNumber-1){
+                        flag++;
+                        ele.find(".switch-in>li:first-child").animate({"margin-left":-(switchWidth*flag)+"px"});
+                        ele.find(".switch-btn li").removeClass("active");
+                        ele.find(".switch-btn li").eq(flag).addClass("active");
+                    }else{
+                        ele.find(".switch-in>li:first-child").animate({"margin-left":"0px"});
+                        ele.find(".switch-btn li").removeClass("active");
+                        ele.find(".switch-btn li").eq(0).addClass("active");
+                    }
+                }
+                var myVar=setInterval(function(){
+                    switchGo();
+                },2000);
+                ele.mouseover(function(){
+                    clearInterval(myVar);
+                })
+                ele.mouseout(function(){
+                    myVar=setInterval(function(){ switchGo()},2000);
+                })
+
+
+            }
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">下拉菜单<strong>select_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-select-a" id="select1">
+                <span>下拉菜单</span>
+                <ul>
+                    <li>下拉菜单1</li>
+                    <li>下拉菜单2</li>
+                    <li>下拉菜单3</li>
+                    <li>下拉菜单4</li>
+                    <li>下拉菜单5</li>
+                </ul>
+                <select>
+                    <option>下拉菜单1</option>
+                    <option>下拉菜单2</option>
+                    <option>下拉菜单3</option>
+                    <option>下拉菜单4</option>
+                    <option>下拉菜单5</option>
+                </select>
+            </div>
+        </div>
+        <style>
+            .e-select-a{
+                position: relative;
+                width:5vw;
+            }
+            .e-select-a>span{
+                display: block;
+                height: 2.5vh;
+                line-height: 2.5vh;
+                text-indent: 0.3vw;
+                cursor: pointer;
+                padding-right: 1.2vw;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                background: #3c74c7 url(./images/select_a/arr1.png) no-repeat 90% center;
+            }
+            .e-select-a>span:hover{
+                background-color: #609bf5;
+            }
+            .e-select-a>ul{
+                display: none;
+                position: absolute;
+                left: 0;
+                top:2.5vh;
+                width:100%;
+                background-color: #013077;
+                animation: selectIn 0.3s ease forwards;
+            }
+            @keyframes selectIn{
+                from {margin-top:2vh;opacity: 0;}
+                to {margin-top:0;opacity: 1;}
+            }
+            .e-select-a>ul>li{
+                height: 2.5vh;
+                line-height: 2.5vh;
+                text-align: center;
+                cursor: pointer;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            .e-select-a>ul>li:hover{
+                background-color: #0a4296;
+            }
+            .e-select-a>select{
+                display: none;
+            }
+        </style>
+        <script>
+            saveHtml('select1');//这个用法用于保存html结构,使用时删掉
+            select_a($("#select1"));
+            function select_a(ele){
+                ele.children("span").click(function(e){
+                    ele.children("ul").show();
+                    e.stopPropagation();
+                })
+                $(document).click(function(e){
+                    ele.children("ul").hide();
+                })
+                ele.children("ul").children("li").click(function(e){
+                    e.stopPropagation();
+                    $(this).parent().hide();
+                    $(this).parent().parent().children("span").html($(this).html());
+                    ele.children("select").val($(this).html());
+                })
+
+            }
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">分页<strong>paging_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-page-a" id="paging1">
+
+            </div>
+        </div>
+        <style>
+            /* 修改所有描边背景 */
+            .e-page-a .layui-laypage span{
+                background-color: transparent;
+                color:#fff;
+            }
+            /* 修改所有描边背景 */
+            .e-page-a .layui-laypage a,
+            .e-page-a .layui-laypage .layui-laypage-spr,
+            .e-page-a .layui-laypage input,
+            .e-page-a .layui-laypage button{
+                border: 1px solid #2166a4;
+                color:#fff;
+                background: rgba(0, 255, 255, 0.05);
+            }
+            .e-page-a .layui-laypage a:hover,
+            .e-page-a .layui-laypage button:hover{
+                color:#fff;
+                background: rgba(0, 255, 255, 0.15);
+            }
+            /* 分页条数下拉选框 */
+            .e-page-a .layui-laypage select{
+                border: 1px solid #2166a4;
+                color:#fff;
+                background: #05174b;
+            }
+            .e-page-a .layui-laypage select:focus,
+            .e-page-a .layui-laypage select:hover{
+                border: 1px solid #2166a4 !important;
+            }
+            /* 选择第几页的input */
+            .e-page-a .layui-laypage input:focus,
+            .e-page-a .layui-laypage input:hover{
+                border: 1px solid #2166a4 !important;
+            }
+            /* 选中按钮 */
+            .layui-laypage .layui-laypage-curr .layui-laypage-em{
+                background: #096e9a;
+                border-radius: 0;
+            }
+            /* 向前翻页按钮 */
+            .e-page-a .layui-laypage .layui-laypage-prev{
+                color:rgba(0,0,0,0);
+                background: rgba(0, 255, 255, 0.05) url(./images/paging_a/prev.png) no-repeat center center;
+            }
+            .e-page-a .layui-laypage .layui-laypage-prev:hover{
+                color:rgba(0,0,0,0);
+                background: rgba(0, 255, 255, 0.15) url(./images/paging_a/prev.png) no-repeat center center;
+            }
+            /* 向后翻页按钮 */
+            .e-page-a .layui-laypage .layui-laypage-next{
+                color:rgba(0,0,0,0);
+                background: rgba(0, 255, 255, 0.05) url(./images/paging_a/next.png) no-repeat center center;
+            }
+            .e-page-a .layui-laypage .layui-laypage-next:hover{
+                color:rgba(0,0,0,0);
+                background: rgba(0, 255, 255, 0.15) url(./images/paging_a/next.png) no-repeat center center;
+            }
+        </style>
+        <script>
+            saveHtml('paging1');//这个用法用于保存html结构,使用时删掉
+            layui.use(['laypage'], function(){
+                var laypage = layui.laypage;
+                laypage.render({
+                    elem: 'paging1'
+                    ,count: 100
+                    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
+                    ,prev:'<'
+                    ,next:'>'
+                    ,jump: function(obj){
+                        // console.log(obj)
+                    }
+                });
+            
+            })
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">转盘<strong>rotate_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show" style="overflow: hidden;">
+            <div class="e-rotate-a" id="rotate1">
+                <div class="cir">
+                    <img src="images/rotate_a/cir1.png">
+                    <img src="images/rotate_a/cir2.png">
+                    <img src="images/rotate_a/cir3.png">
+                    <img src="images/rotate_a/cir4.png">
+                    <img src="images/rotate_a/cir5.png">
+                </div>
+                <img src="images/rotate_a/bg1.png" class="bg1">
+                <img src="images/rotate_a/bg2.png" class="bg2">
+            </div>
+        </div>
+        <style>
+            .e-rotate-a{
+                position: absolute;
+                width: 36vw;
+                height: 36vw;
+                top: 50%;
+                left: 50%;
+                margin-left: -18vw;
+                margin-top: -16vw;
+                /* border:1px solid red; */
+            }
+            .e-rotate-a img{position: absolute;}
+            .e-rotate-a .cir{
+                width: 100%;
+                height: 100%;
+                transform: rotateX(80deg);
+                -webkit-transform: rotateX(80deg);
+            }
+            .e-rotate-a .cir img:nth-child(1){
+                width:20vw;
+                height:20vw;
+                top: 50%;
+                left: 50%;
+                margin-left: -10vw;
+                margin-top: -7vw;
+                animation: rotate2 10s linear infinite;
+                -webkit-animation: rotate2 10s linear infinite;
+            }
+            .e-rotate-a .cir img:nth-child(2){
+                width:18vw;
+                height:18vw;
+                top: 50%;
+                left: 50%;
+                margin-left: -9vw;
+                margin-top: -9vw;
+                animation: rotate1 12s linear infinite;
+                -webkit-animation: rotate1 12s linear infinite;
+            }
+            .e-rotate-a .cir img:nth-child(3){
+                width:14vw;
+                height:14vw;
+                top: 50%;
+                left: 50%;
+                margin-left: -7vw;
+                margin-top: -7vw;
+                animation: rotate2 14s linear infinite;
+                -webkit-animation: rotate2 14s linear infinite;
+            }
+            .e-rotate-a .cir img:nth-child(4){
+                width:8.6vw;
+                height:8.6vw;
+                top: 50%;
+                left: 50%;
+                margin-left: -4.3vw;
+                margin-top: -4.3vw;
+                animation: rotate1 16s linear infinite;
+                -webkit-animation: rotate1 16s linear infinite;
+            }
+            .e-rotate-a .cir img:nth-child(5){
+                width:6.6vw;
+                height:6.6vw;
+                top: 50%;
+                left: 50%;
+                margin-left: -3.3vw;
+                margin-top: -3.3vw;
+                animation: rotate1 8s linear infinite;
+                -webkit-animation: rotate1 8s linear infinite;
+            }
+            .e-rotate-a .bg1{
+                width:16vw;
+                height:4vw;
+                top: 50%;
+                left: 50%;
+                margin-left: -8vw;
+                margin-top: -4vw;
+                animation: rotateBg 1.5s linear infinite;
+                -webkit-animation: rotateBg 1.5s linear infinite;
+            }
+            .e-rotate-a .bg2{
+                width:40vw;
+                height:36vw;
+                top: 50%;
+                left: 50%;
+                margin-left: -20vw;
+                margin-top: -31vw;
+                animation: rotateBg 3s linear infinite;
+                -webkit-animation: rotateBg 3s linear infinite;
+            }
+            @keyframes rotate1{
+                from {transform: rotateZ(0deg);}
+                to {transform: rotateZ(360deg);}
+            }
+            @-webkit-keyframes rotate1{
+                from {-webkit-transform: rotateZ(0deg);}
+                to {-webkit-transform: rotateZ(360deg);}
+            }
+            @keyframes rotate2{
+                from {transform: rotateZ(360deg);}
+                to {transform: rotateZ(0deg);}
+            }
+            @-webkit-keyframes rotate2{
+                from {-webkit-transform: rotateZ(360deg);}
+                to {-webkit-transform: rotateZ(0deg);}
+            }
+            @keyframes rotateBg{
+                from {opacity: 1;}
+                50%{opacity: 0.3}
+                to {opacity: 1}
+            }
+            @-webkit-keyframes rotateBg{
+                from {opacity: 1;}
+                50%{opacity: 0.3}
+                to {opacity: 1}
+            }
+        </style>
+        <script>
+            saveHtml('rotate1');//这个用法用于保存html结构,使用时删掉
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">地球旋转<strong>earth_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show" style="overflow: hidden;">
+            <div class="e-earth-a" id="earth1"></div>
+        </div>
+        <style>
+            .e-earth-a{
+                width: 400px;
+                height: 400px;
+            }
+        </style>
+        <script>
+            saveHtml('earth1');//这个用法用于保存html结构,使用时删掉
+            earth_a('earth1');
+            function earth_a(id){
+
+                threeStart();
+                // 渲染器
+                var renderer;
+                function initThree(){
+                    width = 400;
+                    height = 400;
+                    renderer = new THREE.WebGLRenderer({
+                        antialias: true,
+                        alpha: true,
+                        canvas: renderer
+                    });
+                    renderer.setSize(width, height);
+                    document.getElementById(id).appendChild(renderer.domElement);
+                    renderer.setClearColor(0x000000, 0);
+                }
+
+                // 相机
+                var camera;
+                function initCamera() {
+                    // 透视相机 视角越大，看到的场景越大，那么中间的物体相对于整个场景来说，就越小了
+                    camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+                    camera.position.x = -500;
+                    camera.position.y = 500;
+                    camera.position.z = -500;
+                    camera.lookAt({ x: 0, y: 0, z: 0 });
+                }
+
+                // 场景
+                var scene;
+                function initScene() {
+                    scene = new THREE.Scene();
+                }
+
+                // 光源
+                var light;
+                function initLight() {
+
+                    // A light source positioned directly above the scene, with color fading from the sky color to the ground color. 
+                    // 位于场景正上方的光源，颜色从天空颜色渐变为地面颜色。
+                    var light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+                    scene.add(light);
+
+                    // 环境光
+                    light = new THREE.AmbientLight(0xFFFFFF);
+                    light.position.set(100, 100, 200);
+                    scene.add(light);
+
+                    // 平行光
+                    // 位置不同，方向光作用于物体的面也不同，看到的物体各个面的颜色也不一样
+                    light = new THREE.DirectionalLight(0xffffbb, 1);
+                    light.position.set(-1, 1, 1);
+                    scene.add(light);
+                }
+
+                // 地球
+                var earthMesh;
+                function initEarth() {
+                    var earthGeo = new THREE.SphereGeometry(200, 100, 100);
+                    var earthMater = new THREE.MeshPhongMaterial({
+                        map: new THREE.TextureLoader().load('./images/earth_a/earth.png'),
+                        side: THREE.DoubleSide,
+                        opacity: 1
+                    });
+                    earthMesh = new THREE.Mesh(earthGeo, earthMater);
+                    scene.add(earthMesh);
+                }
+
+                // 云
+                var cloudsMesh;
+                function initClouds() {
+                    var cloudsGeo = new THREE.SphereGeometry(225, 100, 100);
+                    var cloudsMater = new THREE.MeshPhongMaterial({
+                        alphaMap: new THREE.TextureLoader().load('./images/earth_a/clouds.jpg'),
+                        transparent: true,
+                        opacity: 0.4
+                    });
+                    cloudsMesh = new THREE.Mesh(cloudsGeo, cloudsMater);
+                    scene.add(cloudsMesh);
+                }
+
+                // var controls;
+                function threeStart() {
+                    initThree();
+                    initCamera();
+                    initScene();
+                    initLight();
+                    initEarth();
+                    initClouds();
+                    renderer.clear();
+                    animate();
+                }
+
+                function animate() {
+                    // 地球自转
+                    earthMesh.rotation.y -= 0.002;
+
+                    // 漂浮的云层
+                    cloudsMesh.rotation.y -= 0.005;
+                    cloudsMesh.rotation.z += 0.005;
+
+                    renderer.render(scene, camera);
+                    requestAnimationFrame(animate);
+                }
+            }
+        </script>
+    </div>
+    <div class="m-effect">
+        <div class="u-title">
+            <span class="name">日历<strong>calendar_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-calendar-a" id="calendar1"></div>
+        </div>
+        <style>
+            .e-calendar-a .layui-laydate,
+            .e-calendar-a .layui-laydate-content table,
+            .e-calendar-a .layui-laydate-main {
+                width: 100%;
+            }
+            .e-calendar-a .layui-laydate {
+                border: 1px solid #1ccbd5;
+                background-color: rgba(2, 53, 57, 0.8);
+                box-shadow: none;
+            }
+            .e-calendar-a .layui-laydate-header {
+                border-bottom: none;
+                background: rgba(0, 234, 255, 0.25);
+                height: 4vh;
+                line-height: 4vh;
+                padding: 0 3vw;
+            }
+            .e-calendar-a .layui-laydate-header i {
+                color: #25ffff;
+                top: 0;
+                font-size: 0.6vw;
+            }
+            .e-calendar-a .layui-laydate-header span {
+                color: #fff;
+                font-size: 0.8vw;
+                font-family: "039-CAI978";
+            }
+            .e-calendar-a .layui-laydate-header i:hover,
+            .e-calendar-a .layui-laydate-header span:hover {
+                color: #fff222;
+            }
+            .e-calendar-a .layui-laydate-content {
+                padding: 0.4vh 0.5vw;
+            }
+            .e-calendar-a .layui-laydate-content thead tr {
+                border-bottom: 1px solid #00eaff;
+            }
+            .e-calendar-a .layui-laydate-content tbody tr:last-child {
+                border-bottom: none;
+            }
+            .e-calendar-a .layui-laydate-content tbody tr {
+                border-bottom: 1px dotted #01c9db;
+            }
+            .e-calendar-a .layui-laydate-content td {
+                color: #fff;
+            }
+            .e-calendar-a .layui-laydate-content th {
+                color: #ff6e5f;
+                height: 3vh;
+                padding:0;
+            }
+            .e-calendar-a .layui-laydate-content .laydate-day-next,
+            .e-calendar-a .layui-laydate-content .laydate-day-prev {
+                color: rgba(255, 255, 255, 0.5);
+            }
+            .e-calendar-a .layui-laydate .layui-this {
+                background-color: #ff670c !important;
+            }
+            .e-calendar-a .layui-laydate-list {
+                background-color: #013c42;
+                color: #fff;
+            }
+            .e-calendar-a .layui-laydate-list > li {
+                height: 3.7037037vh;
+                line-height: 3.7037037vh;
+            }
+            .e-calendar-a .layui-laydate-content td:hover,
+            .e-calendar-a .layui-laydate-list li:hover {
+                background-color: rgba(48, 209, 255, 0.5);
+                color: #fff;
+            }
+            .e-calendar-a .layui-laydate-footer {
+                display: none;
+            }
+        </style>
+        <script>
+            saveHtml('calendar1');//这个用法用于保存html结构,使用时删掉
+            layui.use('laydate', function(){
+                var laydate = layui.laydate;
+                laydate.render({
+                    elem: '#calendar1'
+                    ,position: 'static'
+                });	
+            });
+        </script>
+    </div>
+    <!-- <div class="m-effect">
+        <div class="u-title">
+            <span class="name">下拉菜单<strong>select_a</strong></span>
+            <span class="copy-btn">复制代码</span>
+        </div>
+        <div class="u-show">
+            <div class="e-select-a" id="select1">
+
+            </div>
+        </div>
+        <style>
+            
+        </style>
+        <script>
+            saveHtml('select1');//这个用法用于保存html结构,使用时删掉
+            select_a($("#select1"));
+            function select_a(ele){
+
+            }
+        </script>
+    </div> -->
+</div>
+<textarea id="container" class="container">这是幕后黑手</textarea>
+</body>
+</html>

@@ -1,0 +1,8 @@
+/*自定义滚动条样式*/
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-button{background-color:blue;height:0}
+::-webkit-scrollbar-track{background:rgba(0,0,0,0.3);background:none}
+::-webkit-scrollbar-track-piece{background:rgba(0,0,0,0.1)}
+::-webkit-scrollbar-thumb{background:#e24115;border-radius:4px}
+::-webkit-scrollbar-corner{background:blue}
+::-webkit-scrollbar-resizer{background:blue}

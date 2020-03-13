@@ -1,0 +1,58 @@
+body {
+  font-size: 0.72916667vw;
+  background: #05174b;
+  box-sizing: border-box;
+  padding-top: 1px;
+}
+.m-effect {
+  float: left;
+  width: 49%;
+  margin: 0.55555556vh 0.5%;
+  box-sizing: border-box;
+  border: 1px solid #3350a8;
+  position: relative;
+  height: 33.33333333vh;
+}
+.m-effect .u-title {
+  overflow: hidden;
+  background-color: #3350a8;
+}
+.m-effect .u-title .name {
+  float: left;
+  height: 3.33333333vh;
+  line-height: 3.33333333vh;
+  padding: 0 0.52083333vw;
+}
+.m-effect .u-title .name strong {
+  margin-left: 0.52083333vw;
+}
+.m-effect .u-title .copy-btn {
+  float: right;
+  display: inline-block;
+  height: 3.33333333vh;
+  line-height: 3.33333333vh;
+  padding: 0 0.52083333vw;
+  color: #fff;
+  cursor: pointer;
+}
+.m-effect .u-title .copy-btn:hover {
+  text-decoration: underline;
+}
+.u-show {
+  position: absolute;
+  left: 0;
+  top: 3.33333333vh;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.less {
+  display: none;
+}
+.container {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
